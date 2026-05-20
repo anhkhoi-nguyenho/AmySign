@@ -11,3 +11,6 @@ Machine cible : Fedora 44 KDE, Intel Core i7 10th Gen, NVIDIA RTX 2060 Mobile, 3
 Model stt : large-v3-turbo
 
 Résultat : latence trop important sur OpenVINO et Vulkan pour traitement en temps réel
+
+### DEV history
+20/05/2026 - First attempt -- Adding shared ThreadSafe buffer to whisper.cpp stream example
