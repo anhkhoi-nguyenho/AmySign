@@ -18,5 +18,5 @@ Résultat : latence trop important sur OpenVINO et Vulkan pour traitement en tem
 
 23/05/2026 
 - Change of software architecture implementing producer consumer algorithm from C++ to Python
-- WHisper model is changed to large-v3-q5_0 for higher accuracy while keeping speed by reducing ressource usage
+- Whisper model is changed to large-v3-q5_0 for higher accuracy while keeping speed by reducing ressource usage
 - Whisper-stream is now compiled to an executable and interact with Gloss converter using subprocess.Pop() stdout capture and threadsafe buffer
