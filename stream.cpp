@@ -36,7 +36,7 @@ struct whisper_params {
     bool flash_attn    = true;
 
     std::string language  = "fr";
-    std::string model     = "C:/Users/redacted/projectE3/models/whisper-large-v3-french/ggml-model-q5_0.bin";
+    std::string model;
     std::string fname_out;
 };
 
@@ -61,7 +61,7 @@ static bool whisper_params_parse(int argc, char ** argv, whisper_params & params
         else if (arg == "-ac"   || arg == "--audio-ctx")     { params.audio_ctx     = std::stoi(argv[++i]); }
         else if (arg == "-m"    || arg == "--model")         { params.model         = argv[++i]; }
         else {
-			std::cerr << "error: unknown argument: " << arg.c_str() << "\n" << std::flush;
+			std::cerr << "Error: unknown argument: " << arg.c_str() << "\n" << std::flush;
             exit(0);
         }
     }
@@ -78,6 +78,11 @@ int main(int argc, char ** argv) {
 	if (whisper_params_parse(argc, argv, params) == false) {
         return 1;
     }
+	
+	if (params.model.empty()) {
+		std::cerr << "Error: please specify model location using option -m\n" << std::flush;
+		exit(0);
+	}
 
     const int n_samples_step = (1e-3*params.step_ms  )*WHISPER_SAMPLE_RATE;
     const int n_samples_len  = (1e-3*params.length_ms)*WHISPER_SAMPLE_RATE;
