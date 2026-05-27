@@ -38,11 +38,11 @@ struct whisper_params {
     bool flash_attn    = true;
 
     std::string language  = "fr";
-    std::string model     = "models/ggml-large-v3-q5_0.bin";
+    std::string model     = "C:/Users/redacted/projectE3/whisper.cpp/models/ggml-large-v3-q5_0.bin";
     std::string fname_out;
 };
 
-int main() {
+int main(int argc, char ** argv) {
     ggml_backend_load_all();
 
     whisper_params params;
@@ -199,8 +199,8 @@ int main() {
 
             // print result;
             {
-                const int64_t t1 = (t_last - t_start).count()/1000000;
-                const int64_t t0 = std::max(0.0, t1 - pcmf32.size()*1000.0/WHISPER_SAMPLE_RATE);
+                //const int64_t t1 = (t_last - t_start).count()/1000000;
+                //const int64_t t0 = std::max(0.0, t1 - pcmf32.size()*1000.0/WHISPER_SAMPLE_RATE);
 
                 //printf("\n");
                 //printf("### Transcription %d START | t0 = %d ms | t1 = %d ms\n", n_iter, (int) t0, (int) t1);
@@ -213,8 +213,8 @@ int main() {
 
                     if (!params.no_timestamps) {
 
-                        const int64_t t0 = whisper_full_get_segment_t0(ctx, i);
-                        const int64_t t1 = whisper_full_get_segment_t1(ctx, i);
+                        //const int64_t t0 = whisper_full_get_segment_t0(ctx, i);
+                        //const int64_t t1 = whisper_full_get_segment_t1(ctx, i);
 
                         //std::string output = "[" + to_timestamp(t0, false) + " --> " + to_timestamp(t1, false) + "]  " + text;
                         std::string output = text;
@@ -242,7 +242,7 @@ int main() {
                 */
             }
 
-            ++n_iter;
+            //++n_iter;
             //fflush(stdout);
         }
     }
