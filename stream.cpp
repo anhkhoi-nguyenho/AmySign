@@ -1,4 +1,3 @@
-// First working modified example code for new architecture
 #include "common-sdl.h"
 #include "common.h"
 #include "common-whisper.h"
@@ -15,7 +14,6 @@
 // command-line parameters
 struct whisper_params {
     int32_t n_threads  = std::min(4, (int32_t) std::thread::hardware_concurrency());
-    //int32_t n_threads  = 10;
     int32_t step_ms    = 0;
     int32_t length_ms  = 4000;
     int32_t keep_ms    = 0;
@@ -33,7 +31,7 @@ struct whisper_params {
     bool no_context    = true;
     bool no_timestamps = false;
     bool tinydiarize   = false;
-    bool save_audio    = false; // save audio to wav file
+    bool save_audio    = false;
     bool use_gpu       = true;
     bool flash_attn    = true;
 
@@ -80,23 +78,19 @@ int main(int argc, char ** argv) {
 	if (whisper_params_parse(argc, argv, params) == false) {
         return 1;
     }
-	
-    //params.keep_ms   = std::min(params.keep_ms,   params.step_ms);
-    //params.length_ms = std::max(params.length_ms, params.step_ms);
 
     const int n_samples_step = (1e-3*params.step_ms  )*WHISPER_SAMPLE_RATE;
     const int n_samples_len  = (1e-3*params.length_ms)*WHISPER_SAMPLE_RATE;
     const int n_samples_keep = (1e-3*params.keep_ms  )*WHISPER_SAMPLE_RATE;
     const int n_samples_30s  = (1e-3*30000.0         )*WHISPER_SAMPLE_RATE;
 
-    //const bool use_vad = n_samples_step <= 0; // sliding window mode uses VAD
     const bool use_vad = true; // sliding window mode uses VAD
 
     // init audio
 
     audio_async audio(params.length_ms);
     if (!audio.init(params.capture_id, WHISPER_SAMPLE_RATE)) {
-        //fprintf(stderr, "%s: audio.init() failed!\n", __func__);
+        std::cerr << "Error: audio init failed!\n" << std::flush;
         return 1;
     }
 
@@ -104,7 +98,7 @@ int main(int argc, char ** argv) {
 
     // whisper init
     if (params.language != "auto" && whisper_lang_id(params.language.c_str()) == -1){
-        //fprintf(stderr, "error: unknown language '%s'\n", params.language.c_str());
+        std::cerr << "Error: unknown language\n" << std::flush;
         exit(0);
     }
 
@@ -115,7 +109,7 @@ int main(int argc, char ** argv) {
 
     struct whisper_context * ctx = whisper_init_from_file_with_params(params.model.c_str(), cparams);
     if (ctx == nullptr) {
-        //fprintf(stderr, "error: failed to initialize whisper context\n");
+        std::cerr << "Error: failed to initialize whisper context!\n" << std::flush;
         return 2;
     }
 
@@ -129,37 +123,16 @@ int main(int argc, char ** argv) {
 
     // print some info about the processing
     {
-        //fprintf(stderr, "\n");
         if (!whisper_is_multilingual(ctx)) {
-            //fprintf(stderr, "%s: WARNING: model is not multilingual, French is not supported - exiting...\n", __func__);
+            std::cerr << "Error: model is not multilingual, French is not supported!\n" << std::flush;
             exit(0);
         }
-        /*
-        fprintf(stderr, "%s: processing %d samples (step = %.1f sec / len = %.1f sec / keep = %.1f sec), %d threads, lang = %s, task = %s, timestamps = %d ...\n",
-                __func__,
-                n_samples_step,
-                float(n_samples_step)/WHISPER_SAMPLE_RATE,
-                float(n_samples_len )/WHISPER_SAMPLE_RATE,
-                float(n_samples_keep)/WHISPER_SAMPLE_RATE,
-                params.n_threads,
-                params.language.c_str(),
-                params.translate ? "translate" : "transcribe",
-                params.no_timestamps ? 0 : 1);
-
-        fprintf(stderr, "%s: using VAD, will transcribe on speech activity\n", __func__);
-
-        fprintf(stderr, "\n");
-        */
 		std::cerr << "\nReady !\n" << std::flush;
     }
 
     int n_iter = 0;
 
     bool is_running = true;
-
-    //printf("[Start speaking]\n");
-    //fflush(stdout);
-    //std::cout << "\n[Start speaking]\n" << std::flush;
 
     auto t_last  = std::chrono::high_resolution_clock::now();
     const auto t_start = t_last;
@@ -225,58 +198,28 @@ int main(int argc, char ** argv) {
             wparams.prompt_n_tokens  = params.no_context ? 0       : prompt_tokens.size();
 
             if (whisper_full(ctx, wparams, pcmf32.data(), pcmf32.size()) != 0) {
-                //fprintf(stderr, "failed to process audio\n");
+                std::cerr << "Error: failed to process audio\n" << std::flush;
                 return 6;
             }
 
             // print result;
             {
-                //const int64_t t1 = (t_last - t_start).count()/1000000;
-                //const int64_t t0 = std::max(0.0, t1 - pcmf32.size()*1000.0/WHISPER_SAMPLE_RATE);
-
-                //printf("\n");
-                //printf("### Transcription %d START | t0 = %d ms | t1 = %d ms\n", n_iter, (int) t0, (int) t1);
-                //printf("\n");
-                //std::cout << "\n### Transcription " << n_iter << " START | t0 = " << (int) t0 << " ms | t1 = " << (int) t1 << " ms\n\n" << std::flush;
-
                 const int n_segments = whisper_full_n_segments(ctx);
                 for (int i = 0; i < n_segments; ++i) {
                     const char * text = whisper_full_get_segment_text(ctx, i);
 
-					//const int64_t t0 = whisper_full_get_segment_t0(ctx, i);
-					//const int64_t t1 = whisper_full_get_segment_t1(ctx, i);
-
-					//std::string output = "[" + to_timestamp(t0, false) + " --> " + to_timestamp(t1, false) + "]  " + text;
 					std::string output = text;
 
-					/*
-					if (whisper_full_get_segment_speaker_turn_next(ctx, i)) {
-						output += " [SPEAKER_TURN]";
-					}
-					*/
 					output += "\n";
 
-					//printf("%s", output.c_str());
-					//fflush(stdout);
 					std::cout << output << std::flush;
                 }
-                /*
-                if (use_vad) {
-                    //printf("\n");
-                    //printf("### Transcription %d END\n", n_iter);
-                    std::cout << "\n### Transcription " << n_iter << " END\n" << std::flush;
-                }
-                */
             }
-
-            //++n_iter;
-            //fflush(stdout);
         }
     }
 
     audio.pause();
 
-    //whisper_print_timings(ctx);
     whisper_free(ctx);
 
     return 0;
