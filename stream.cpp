@@ -14,13 +14,13 @@
 
 // command-line parameters
 struct whisper_params {
-    //int32_t n_threads  = std::min(4, (int32_t) std::thread::hardware_concurrency());
-    int32_t n_threads  = 10;
+    int32_t n_threads  = std::min(4, (int32_t) std::thread::hardware_concurrency());
+    //int32_t n_threads  = 10;
     int32_t step_ms    = 0;
-    int32_t length_ms  = 3000;
+    int32_t length_ms  = 4000;
     int32_t keep_ms    = 0;
     int32_t capture_id = -1;
-    int32_t max_tokens = 32;
+    int32_t max_tokens = 0;
     int32_t audio_ctx  = 0;
     int32_t beam_size  = -1;
 
@@ -38,15 +38,49 @@ struct whisper_params {
     bool flash_attn    = true;
 
     std::string language  = "fr";
-    std::string model     = "C:/Users/redacted/projectE3/whisper.cpp/models/ggml-large-v3-q5_0.bin";
+    std::string model     = "C:/Users/redacted/projectE3/models/whisper-large-v3-french/ggml-model-q5_0.bin";
     std::string fname_out;
 };
+
+void display_configurable_options(const whisper_params & params){
+	std::cerr << "\nwhisper-stream configurable options:\n" << std::flush;
+	std::cerr << "  -t N,     --threads N     number of threads to use during computation                    -   current:   " << params.n_threads     << "\n" << std::flush;
+	std::cerr << "            --length N      audio length in milliseconds                                   -   current:   " << params.length_ms     << "\n" << std::flush;
+	std::cerr << "  -vth N,   --vad-thold N   voice activity detection threshold (higher = more sensitive)   -   current:   " << params.vad_thold     << "\n" << std::flush;
+	std::cerr << "  -fth N,   --freq-thold N  high-pass frequency cutoff                                     -   current:   " << params.freq_thold    << "\n" << std::flush;
+	std::cerr << "  -ac N,    --audio-ctx N   audio context size (0 - all)                                   -   current:   " << params.audio_ctx     << "\n" << std::flush;
+	std::cerr << "  -m FNAME, --model FNAME   model path                                                     -   current:   " << params.model.c_str() << "\n" << std::flush;
+}
+
+static bool whisper_params_parse(int argc, char ** argv, whisper_params & params) {
+    for (int i = 1; i < argc; i++) {
+        std::string arg = argv[i];
+
+        if 		(arg == "-t"    || arg == "--threads")       { params.n_threads     = std::stoi(argv[++i]); }
+        else if (                  arg == "--length")        { params.length_ms     = std::stoi(argv[++i]); }
+        else if (arg == "-vth"  || arg == "--vad-thold")     { params.vad_thold     = std::stof(argv[++i]); }
+        else if (arg == "-fth"  || arg == "--freq-thold")    { params.freq_thold    = std::stof(argv[++i]); }
+        else if (arg == "-ac"   || arg == "--audio-ctx")     { params.audio_ctx     = std::stoi(argv[++i]); }
+        else if (arg == "-m"    || arg == "--model")         { params.model         = argv[++i]; }
+        else {
+			std::cerr << "error: unknown argument: " << arg.c_str() << "\n" << std::flush;
+            exit(0);
+        }
+    }
+
+    return true;
+}
+
 
 int main(int argc, char ** argv) {
     ggml_backend_load_all();
 
     whisper_params params;
 
+	if (whisper_params_parse(argc, argv, params) == false) {
+        return 1;
+    }
+	
     //params.keep_ms   = std::min(params.keep_ms,   params.step_ms);
     //params.length_ms = std::max(params.length_ms, params.step_ms);
 
@@ -57,10 +91,6 @@ int main(int argc, char ** argv) {
 
     //const bool use_vad = n_samples_step <= 0; // sliding window mode uses VAD
     const bool use_vad = true; // sliding window mode uses VAD
-
-    params.no_timestamps  = !use_vad;
-    params.no_context    |= use_vad;
-    params.max_tokens     = 0;
 
     // init audio
 
@@ -94,6 +124,8 @@ int main(int argc, char ** argv) {
     std::vector<float> pcmf32_new(n_samples_30s, 0.0f);
 
     std::vector<whisper_token> prompt_tokens;
+	
+	display_configurable_options(params);
 
     // print some info about the processing
     {
@@ -118,7 +150,7 @@ int main(int argc, char ** argv) {
 
         fprintf(stderr, "\n");
         */
-        fprintf(stderr, "Ready !\n");
+		std::cerr << "\nReady !\n" << std::flush;
     }
 
     int n_iter = 0;
@@ -211,27 +243,22 @@ int main(int argc, char ** argv) {
                 for (int i = 0; i < n_segments; ++i) {
                     const char * text = whisper_full_get_segment_text(ctx, i);
 
-                    if (!params.no_timestamps) {
+					//const int64_t t0 = whisper_full_get_segment_t0(ctx, i);
+					//const int64_t t1 = whisper_full_get_segment_t1(ctx, i);
 
-                        //const int64_t t0 = whisper_full_get_segment_t0(ctx, i);
-                        //const int64_t t1 = whisper_full_get_segment_t1(ctx, i);
+					//std::string output = "[" + to_timestamp(t0, false) + " --> " + to_timestamp(t1, false) + "]  " + text;
+					std::string output = text;
 
-                        //std::string output = "[" + to_timestamp(t0, false) + " --> " + to_timestamp(t1, false) + "]  " + text;
-                        std::string output = text;
+					/*
+					if (whisper_full_get_segment_speaker_turn_next(ctx, i)) {
+						output += " [SPEAKER_TURN]";
+					}
+					*/
+					output += "\n";
 
-                        /*
-                        if (whisper_full_get_segment_speaker_turn_next(ctx, i)) {
-                            output += " [SPEAKER_TURN]";
-                        }
-                        */
-                        output += "\n";
-
-                        //printf("%s", output.c_str());
-                        //fflush(stdout);
-                        std::cout << output << std::flush;
-
-
-                    }
+					//printf("%s", output.c_str());
+					//fflush(stdout);
+					std::cout << output << std::flush;
                 }
                 /*
                 if (use_vad) {
