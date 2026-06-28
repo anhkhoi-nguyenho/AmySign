@@ -1,0 +1,87 @@
+{
+    "source": "lettre_z_glosses1.json",
+    "description": "JSON machine pour Unity - Lettre Z en LSF : index tendu vers le haut qui trace un Z dans l'air. Paume vers la caméra. Autres doigts repliés, pouce sur le majeur.",
+    "avatar_instructions": {
+        "coordinate_system": "avatar_relative",
+        "origin": "avatar_root",
+        "axis_definition": {
+            "x": "droite_de_l_avatar",
+            "y": "haut_de_l_avatar",
+            "z": "avant_de_l_avatar"
+        },
+        "unit": "meter",
+        "dominant_hand": "right",
+        "avatar_height_reference": 1.6
+    },
+    "unity_implementation_notes": {
+        "goal": "Lettre Z : l'index dessine un Z dans l'air. 1) Trait horizontal vers la droite, 2) diagonale vers bas-gauche, 3) trait horizontal vers la droite.",
+        "important_choices": [
+            "Index tendu pointant vers le haut.",
+            "Majeur, annulaire, auriculaire repliés.",
+            "Pouce posé sur le majeur replié.",
+            "Paume vers la caméra (Y=0).",
+            "Mouvement en 3 segments pour dessiner le Z.",
+            "Position centrée à (0.12, 1.05, 0.16) avec mouvement autour."
+        ],
+        "ik_settings": {
+            "target_position_weight": 1.0,
+            "target_rotation_weight": 1.0,
+            "hint_weight": 0.20
+        },
+        "wrist_settings": {
+            "euler": {"x": 0, "y": 0, "z": 0},
+            "note": "Y=0 pour paume vers la caméra."
+        },
+        "finger_settings": {
+            "description": "Index tendu, autres doigts repliés.",
+            "index":  {"ph1": {"x": -20, "y": 0, "z": 0}, "ph2": {"x": -15, "y": 0, "z": 0}, "ph3": {"x": -10, "y": 0, "z": 0}, "note": "tendu"},
+            "middle": {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}, "note": "replié"},
+            "ring":   {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}, "note": "replié"},
+            "pinky":  {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}, "note": "replié"},
+            "thumb":  {"ph1": {"x": 40, "y": 20, "z": 50}, "ph2": {"x": 40, "y": 0, "z": 30}, "ph3": {"x": 20, "y": 0, "z": 0}, "note": "posé sur majeur"}
+        }
+    },
+    "sentences": [
+        {
+            "francais": "Z",
+            "glose": ["Z"],
+            "sequence": [
+                {
+                    "sign_id": "Z",
+                    "duration": 2.0,
+                    "hold_at_end": true,
+                    "manual_parameters": {
+                        "right_hand": {
+                            "active": true,
+                            "handshape": "lettre_z_lsf",
+                            "movement": {
+                                "type": "trace_lettre_z",
+                                "path": [
+                                    {"x": 0.06, "y": 1.15, "z": 0.16, "phase": "haut_gauche"},
+                                    {"x": 0.18, "y": 1.15, "z": 0.16, "phase": "haut_droite"},
+                                    {"x": 0.06, "y": 0.95, "z": 0.16, "phase": "bas_gauche"},
+                                    {"x": 0.18, "y": 0.95, "z": 0.16, "phase": "bas_droite"}
+                                ]
+                            },
+                            "elbow_position": {"x": 0.32, "y": 0.82, "z": 0.10},
+                            "wrist_euler": {"x": 0, "y": 0, "z": 0},
+                            "finger_rotations": {
+                                "index":  {"ph1": {"x": -20, "y":  0, "z":  0}, "ph2": {"x": -15, "y": 0, "z":  0}, "ph3": {"x": -10, "y": 0, "z":  0}},
+                                "middle": {"ph1": {"x":  80, "y":  0, "z":  0}, "ph2": {"x":  90, "y": 0, "z":  0}, "ph3": {"x":  70, "y": 0, "z":  0}},
+                                "ring":   {"ph1": {"x":  80, "y":  0, "z":  0}, "ph2": {"x":  90, "y": 0, "z":  0}, "ph3": {"x":  70, "y": 0, "z":  0}},
+                                "pinky":  {"ph1": {"x":  80, "y":  0, "z":  0}, "ph2": {"x":  90, "y": 0, "z":  0}, "ph3": {"x":  70, "y": 0, "z":  0}},
+                                "thumb":  {"ph1": {"x":  40, "y": 20, "z": 50}, "ph2": {"x":  40, "y": 0, "z": 30}, "ph3": {"x":  20, "y": 0, "z":  0}}
+                            }
+                        },
+                        "left_hand": {"active": false}
+                    },
+                    "non_manual_parameters": {
+                        "facial_expression": "neutral",
+                        "eyebrows": "neutral",
+                        "gaze_target": {"x": 0.0, "y": 1.15, "z": 1.7}
+                    }
+                }
+            ]
+        }
+    ]
+}

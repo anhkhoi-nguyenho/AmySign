@@ -1,0 +1,88 @@
+{
+    "source": "venir_output_glosses1.json",
+    "description": "JSON machine pour Unity - Signe VENIR en LSF : bras tendu vers l'avant qui se replie vers le torse, index courbé, autres doigts repliés, pouce sur majeur, paume vers soi.",
+    "avatar_instructions": {
+        "coordinate_system": "avatar_relative",
+        "origin": "avatar_root",
+        "axis_definition": {
+            "x": "droite_de_l_avatar",
+            "y": "haut_de_l_avatar",
+            "z": "avant_de_l_avatar"
+        },
+        "unit": "meter",
+        "dominant_hand": "right",
+        "avatar_height_reference": 1.6
+    },
+    "unity_implementation_notes": {
+        "goal": "VENIR : bras presque tendu vers l'avant, l'index courbé fait un geste d'appel vers soi, la main se rapproche du torse. Paume vers le signeur.",
+        "important_choices": [
+            "Index courbé (non tendu, non plié complètement) - il appelle vers soi.",
+            "Majeur, annulaire, auriculaire repliés.",
+            "Pouce posé sur le majeur replié.",
+            "Bras part presque tendu vers l'avant et se replie vers le torse.",
+            "Paume orientée vers le signeur (vers soi)."
+        ],
+        "ik_settings": {
+            "target_position_weight": 1.0,
+            "target_rotation_weight": 1.0,
+            "hint_weight": 0.20
+        },
+        "wrist_settings": {
+            "euler": {"x": 0, "y": 0, "z": 0},
+            "note": "Paume vers le signeur. Calibrer si besoin."
+        },
+        "finger_settings": {
+            "index":  {"ph1": {"x": 30, "y": 0, "z": 0},  "ph2": {"x": 40, "y": 0, "z": 0},  "ph3": {"x": 30, "y": 0, "z": 0},  "note": "courbé (pas tendu, pas plié complet)"},
+            "middle": {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}, "note": "replié"},
+            "ring":   {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}, "note": "replié"},
+            "pinky":  {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}, "note": "replié"},
+            "thumb":  {"ph1": {"x": 40, "y": 20, "z": 50}, "ph2": {"x": 40, "y": 0, "z": 30}, "ph3": {"x": 20, "y": 0, "z": 0}, "note": "posé sur majeur"}
+        }
+    },
+    "sentences": [
+        {
+            "francais": "VENIR",
+            "glose": ["VENIR"],
+            "sequence": [
+                {
+                    "sign_id": "VENIR",
+                    "duration": 1.4,
+                    "hold_at_end": true,
+                    "manual_parameters": {
+                        "right_hand": {
+                            "active": true,
+                            "handshape": "venir_lsf",
+                            "movement": {
+                                "type": "rapprochement_torse",
+                                "path": [
+                                    {"x": 0.10, "y": 1.00, "z": 0.45, "phase": "bras_tendu_avant"},
+                                    {"x": 0.08, "y": 1.00, "z": 0.30, "phase": "milieu"},
+                                    {"x": 0.06, "y": 1.00, "z": 0.15, "phase": "proche_torse"}
+                                ]
+                            },
+                            "elbow_path": [
+                                {"x": 0.28, "y": 0.90, "z": 0.20},
+                                {"x": 0.30, "y": 0.85, "z": 0.10},
+                                {"x": 0.32, "y": 0.82, "z": 0.00}
+                            ],
+                            "wrist_euler": {"x": 0, "y": 0, "z": 0},
+                            "finger_rotations": {
+                                "index":  {"ph1": {"x": 30, "y":  0, "z":  0}, "ph2": {"x": 40, "y": 0, "z":  0}, "ph3": {"x": 30, "y": 0, "z":  0}},
+                                "middle": {"ph1": {"x": 80, "y":  0, "z":  0}, "ph2": {"x": 90, "y": 0, "z":  0}, "ph3": {"x": 70, "y": 0, "z":  0}},
+                                "ring":   {"ph1": {"x": 80, "y":  0, "z":  0}, "ph2": {"x": 90, "y": 0, "z":  0}, "ph3": {"x": 70, "y": 0, "z":  0}},
+                                "pinky":  {"ph1": {"x": 80, "y":  0, "z":  0}, "ph2": {"x": 90, "y": 0, "z":  0}, "ph3": {"x": 70, "y": 0, "z":  0}},
+                                "thumb":  {"ph1": {"x": 40, "y": 20, "z": 50}, "ph2": {"x": 40, "y": 0, "z": 30}, "ph3": {"x": 20, "y": 0, "z":  0}}
+                            }
+                        },
+                        "left_hand": {"active": false}
+                    },
+                    "non_manual_parameters": {
+                        "facial_expression": "neutral_invitation",
+                        "eyebrows": "neutral",
+                        "gaze_target": {"x": 0.0, "y": 1.15, "z": 1.7}
+                    }
+                }
+            ]
+        }
+    ]
+}

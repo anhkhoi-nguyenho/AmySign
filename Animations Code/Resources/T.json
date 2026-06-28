@@ -1,0 +1,87 @@
+{
+    "source": "lettre_t_output_glosses1.json",
+    "description": "JSON machine pour Unity - Lettre T LSF V3 : majeur+annulaire+auriculaire tendus, index replié sur pouce, pouce replié. Phalanges contrôlées individuellement.",
+    "avatar_instructions": {
+        "coordinate_system": "avatar_relative",
+        "origin": "avatar_root",
+        "axis_definition": {
+            "x": "droite_de_l_avatar",
+            "y": "haut_de_l_avatar",
+            "z": "avant_de_l_avatar"
+        },
+        "unit": "meter",
+        "dominant_hand": "right",
+        "avatar_height_reference": 1.6
+    },
+    "unity_implementation_notes": {
+        "goal": "Lettre T : bras levé, majeur+annulaire+auriculaire tendus, index replié posé sur dos du pouce, pouce replié. Main maintenue sans retour repos.",
+        "corrections_v3": [
+            "Forme corrigée : majeur+annulaire+auriculaire tendus (pas index+majeur).",
+            "Index replié avec 3 phalanges contrôlées pour poser sur le dos du pouce.",
+            "Pouce replié avec 3 phalanges pour que l'index repose dessus.",
+            "Position finale y=1.05 (légèrement abaissée vs V2).",
+            "Poignet appliqué une seule fois à la fin, pas pendant la montée."
+        ],
+        "ik_settings": {
+            "target_position_weight": 1.0,
+            "target_rotation_weight": 1.0,
+            "hint_weight": 0.20
+        },
+        "wrist_settings": {
+            "euler": {"x": 0, "y": 340, "z": -30},
+            "note": "Valeurs observées sur le RightHandTarget à la fin du mouvement. Ajuster si besoin."
+        },
+        "finger_settings": {
+            "middle":  {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}, "note": "tendu"},
+            "ring":    {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}, "note": "tendu"},
+            "pinky":   {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}, "note": "tendu"},
+            "index":   {"ph1": {"x": 60, "y": 0, "z": 0}, "ph2": {"x": 80, "y": 0, "z": 0}, "ph3": {"x": 60, "y": 0, "z": 0}, "note": "replié sur pouce"},
+            "thumb":   {"ph1": {"x": 30, "y": 30, "z": 50}, "ph2": {"x": 40, "y": 0, "z": 20}, "ph3": {"x": 20, "y": 0, "z": 0}, "note": "replié sous index"}
+        }
+    },
+    "sentences": [
+        {
+            "francais": "T",
+            "glose": ["LETTRE-T"],
+            "sequence": [
+                {
+                    "sign_id": "LETTRE-T",
+                    "duration": 0.8,
+                    "hold_at_end": true,
+                    "manual_parameters": {
+                        "right_hand": {
+                            "active": true,
+                            "handshape": "lettre_T_lsf",
+                            "movement": {
+                                "path": [
+                                    {"x": 0.18, "y": 0.38, "z": 0.04, "phase": "repos"},
+                                    {"x": 0.16, "y": 0.68, "z": 0.12, "phase": "montee"},
+                                    {"x": 0.12, "y": 1.05, "z": 0.16, "phase": "position_T"}
+                                ]
+                            },
+                            "elbow_path": [
+                                {"x": 0.28, "y": 0.46, "z": 0.02},
+                                {"x": 0.30, "y": 0.64, "z": 0.08},
+                                {"x": 0.32, "y": 0.82, "z": 0.10}
+                            ],
+                            "wrist_euler": {"x": 0, "y": 340, "z": -30},
+                            "finger_rotations": {
+                                "middle": {"ph1": {"x": 0,  "y":  0, "z":  0}, "ph2": {"x":  0, "y": 0, "z": 0}, "ph3": {"x":  0, "y": 0, "z":  0}},
+                                "ring":   {"ph1": {"x": 0,  "y":  0, "z":  0}, "ph2": {"x":  0, "y": 0, "z": 0}, "ph3": {"x":  0, "y": 0, "z":  0}},
+                                "pinky":  {"ph1": {"x": 0,  "y":  0, "z":  0}, "ph2": {"x":  0, "y": 0, "z": 0}, "ph3": {"x":  0, "y": 0, "z":  0}},
+                                "index":  {"ph1": {"x": 60, "y":  0, "z":  0}, "ph2": {"x": 80, "y": 0, "z": 0}, "ph3": {"x": 60, "y": 0, "z":  0}},
+                                "thumb":  {"ph1": {"x": 30, "y": 30, "z": 50}, "ph2": {"x": 40, "y": 0, "z": 20}, "ph3": {"x": 20, "y": 0, "z": 0}}
+                            }
+                        },
+                        "left_hand": {"active": false}
+                    },
+                    "non_manual_parameters": {
+                        "facial_expression": "neutral",
+                        "eyebrows": "neutral",
+                        "gaze_target": {"x": 0.0, "y": 1.15, "z": 1.7}
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,119 @@
+{
+    "source": "ou_output_glosses1.json",
+    "description": "JSON machine pour Unity - OÙ V8 : chaque doigt a ses propres paramètres X Y Z indépendants.",
+    "avatar_instructions": {
+        "coordinate_system": "avatar_relative",
+        "origin": "avatar_root",
+        "axis_definition": {
+            "x": "droite_de_l_avatar",
+            "y": "haut_de_l_avatar",
+            "z": "avant_de_l_avatar"
+        },
+        "unit": "meter",
+        "dominant_hand": "both",
+        "avatar_height_reference": 1.6
+    },
+    "unity_implementation_notes": {
+        "goal": "OÙ V8 : chaque doigt calibrable indépendamment dans l'inspecteur.",
+        "nouveaute_v8": [
+            "Chaque doigt (index, majeur, annulaire, auriculaire) a ses propres champs X Y Z phalange 1 et 2.",
+            "La main gauche est le miroir automatique de la droite (Y inversé).",
+            "Le pouce garde ses champs séparés droite/gauche.",
+            "Pour serrer les doigts : modifier Y de chaque doigt (essayer négatif ou positif selon le rig).",
+            "Pour replier : modifier X.",
+            "Pour tourner latéralement : modifier Z."
+        ],
+        "wrist_settings": {
+            "right_hand_euler": {"x": -20, "y": 180, "z": 0},
+            "left_hand_euler":  {"x": -20, "y": 180, "z": 0}
+        },
+        "finger_settings": {
+            "index_ph1":  {"x": 40, "y": -8, "z": 0},
+            "index_ph2":  {"x": 20, "y":  0, "z": 0},
+            "middle_ph1": {"x": 40, "y": -8, "z": 0},
+            "middle_ph2": {"x": 20, "y":  0, "z": 0},
+            "ring_ph1":   {"x": 40, "y": -8, "z": 0},
+            "ring_ph2":   {"x": 20, "y":  0, "z": 0},
+            "pinky_ph1":  {"x": 40, "y": -8, "z": 0},
+            "pinky_ph2":  {"x": 20, "y":  0, "z": 0},
+            "thumb_ph1_right": {"x": 40, "y":  0, "z":  60},
+            "thumb_ph1_left":  {"x": 40, "y":  0, "z": -60},
+            "thumb_ph2":       {"x": 20, "y":  0, "z":   0},
+            "note": "Y serre ou écarte selon le rig. Essayer Y négatif ET Y positif pour trouver le bon sens. Z fait tourner latéralement."
+        },
+        "elbow_positions": {
+            "right": {"x":  0.22, "y": 0.82, "z": 0.05},
+            "left":  {"x": -0.22, "y": 0.82, "z": 0.05}
+        }
+    },
+    "glosses_sequence": [
+        {
+            "gloss": "OÙ",
+            "start_time": 0.0,
+            "end_time": 1.8,
+            "manual_parameters": [
+                {
+                    "right_hand": {
+                        "active": true,
+                        "handshape": "fingers_together_thumb_behind",
+                        "spatial_tracking": {
+                            "path": [
+                                {"x":  0.12, "y": 0.95, "z": 0.22, "phase": "center_start"},
+                                {"x":  0.20, "y": 0.95, "z": 0.22, "phase": "out_1"},
+                                {"x":  0.10, "y": 0.95, "z": 0.22, "phase": "in_1"},
+                                {"x":  0.20, "y": 0.95, "z": 0.22, "phase": "out_2"},
+                                {"x":  0.10, "y": 0.95, "z": 0.22, "phase": "in_2"},
+                                {"x":  0.20, "y": 0.95, "z": 0.22, "phase": "out_3"},
+                                {"x":  0.10, "y": 0.95, "z": 0.22, "phase": "in_3"},
+                                {"x":  0.20, "y": 0.95, "z": 0.22, "phase": "out_4"},
+                                {"x":  0.12, "y": 0.95, "z": 0.22, "phase": "center_end"}
+                            ]
+                        },
+                        "wrist_euler": {"x": -20, "y": 180, "z": 0},
+                        "finger_pose": {
+                            "index":  {"ph1": {"x": 40, "y": -8, "z": 0}, "ph2": {"x": 20, "y": 0, "z": 0}},
+                            "middle": {"ph1": {"x": 40, "y": -8, "z": 0}, "ph2": {"x": 20, "y": 0, "z": 0}},
+                            "ring":   {"ph1": {"x": 40, "y": -8, "z": 0}, "ph2": {"x": 20, "y": 0, "z": 0}},
+                            "pinky":  {"ph1": {"x": 40, "y": -8, "z": 0}, "ph2": {"x": 20, "y": 0, "z": 0}},
+                            "thumb":  {"ph1": {"x": 40, "y":  0, "z": 60}, "ph2": {"x": 20, "y": 0, "z": 0}}
+                        }
+                    },
+                    "left_hand": {
+                        "active": true,
+                        "handshape": "fingers_together_thumb_behind",
+                        "spatial_tracking": {
+                            "path": [
+                                {"x": -0.12, "y": 0.95, "z": 0.22, "phase": "center_start"},
+                                {"x": -0.20, "y": 0.95, "z": 0.22, "phase": "out_1"},
+                                {"x": -0.10, "y": 0.95, "z": 0.22, "phase": "in_1"},
+                                {"x": -0.20, "y": 0.95, "z": 0.22, "phase": "out_2"},
+                                {"x": -0.10, "y": 0.95, "z": 0.22, "phase": "in_2"},
+                                {"x": -0.20, "y": 0.95, "z": 0.22, "phase": "out_3"},
+                                {"x": -0.10, "y": 0.95, "z": 0.22, "phase": "in_3"},
+                                {"x": -0.20, "y": 0.95, "z": 0.22, "phase": "out_4"},
+                                {"x": -0.12, "y": 0.95, "z": 0.22, "phase": "center_end"}
+                            ]
+                        },
+                        "wrist_euler": {"x": -20, "y": 180, "z": 0},
+                        "finger_pose": {
+                            "index":  {"ph1": {"x": 40, "y":  8, "z": 0}, "ph2": {"x": 20, "y": 0, "z": 0}},
+                            "middle": {"ph1": {"x": 40, "y":  8, "z": 0}, "ph2": {"x": 20, "y": 0, "z": 0}},
+                            "ring":   {"ph1": {"x": 40, "y":  8, "z": 0}, "ph2": {"x": 20, "y": 0, "z": 0}},
+                            "pinky":  {"ph1": {"x": 40, "y":  8, "z": 0}, "ph2": {"x": 20, "y": 0, "z": 0}},
+                            "thumb":  {"ph1": {"x": 40, "y":  0, "z": -60}, "ph2": {"x": 20, "y": 0, "z": 0}}
+                        }
+                    },
+                    "non_manual_parameters": {
+                        "facial_expression": "question_frown",
+                        "eyebrows": "furrowed",
+                        "gaze_target": {"x": 0.0, "y": 1.15, "z": 1.7}
+                    }
+                }
+            ],
+            "transition": {
+                "type": "smooth",
+                "pause_between_signs": 0.15
+            }
+        }
+    ]
+}

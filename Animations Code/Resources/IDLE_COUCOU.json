@@ -1,0 +1,103 @@
+{
+    "source": "idle_coucou_glosses1.json",
+    "description": "JSON machine pour Unity - Animation IDLE de l'avatar Amy : fait coucou main près du visage, pause 7 secondes, recommence à l'infini.",
+    "avatar_instructions": {
+        "coordinate_system": "avatar_relative",
+        "origin": "avatar_root",
+        "axis_definition": {
+            "x": "droite_de_l_avatar",
+            "y": "haut_de_l_avatar",
+            "z": "avant_de_l_avatar"
+        },
+        "unit": "meter",
+        "dominant_hand": "right",
+        "avatar_height_reference": 1.6
+    },
+    "unity_implementation_notes": {
+        "goal": "Animation IDLE : l'avatar Amy fait coucou avec la main droite près du visage, puis attend 7 secondes, puis recommence en boucle infinie.",
+        "loop_behavior": {
+            "type": "infinite_loop",
+            "description": "Le geste se répète indéfiniment tant que le script tourne.",
+            "structure": [
+                "Phase 1 : geste coucou (durée 2 sec)",
+                "Phase 2 : pause bras au repos (durée 7 sec)",
+                "Retour à Phase 1"
+            ]
+        },
+        "important_choices": [
+            "Main droite levée près du visage (niveau tempe/joue).",
+            "Mouvement latéral de la main (oscillation droite-gauche) pour faire le coucou.",
+            "Main ouverte, tous les doigts tendus, paume vers la caméra.",
+            "Pendant la pause, le bras revient le long du corps au repos.",
+            "L'animation se répète en boucle sans transition brutale."
+        ],
+        "ik_settings": {
+            "target_position_weight": 1.0,
+            "target_rotation_weight": 1.0,
+            "hint_weight": 0.20
+        },
+        "wrist_settings": {
+            "euler_coucou": {"x": 0, "y": 180, "z": 0},
+            "note": "Paume vers la caméra pendant le coucou."
+        },
+        "finger_settings_coucou": {
+            "description": "Main ouverte, tous les doigts tendus.",
+            "index":  {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}},
+            "middle": {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}},
+            "ring":   {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}},
+            "pinky":  {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}},
+            "thumb":  {"ph1": {"x": 0, "y": -20, "z": 20}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}}
+        }
+    },
+    "sentences": [
+        {
+            "francais": "IDLE_COUCOU",
+            "glose": ["IDLE_COUCOU"],
+            "sequence": [
+                {
+                    "sign_id": "IDLE_COUCOU",
+                    "duration_coucou": 2.0,
+                    "duration_pause": 7.0,
+                    "loop": true,
+                    "manual_parameters": {
+                        "right_hand": {
+                            "active": true,
+                            "handshape": "main_ouverte",
+                            "phases": {
+                                "coucou": {
+                                    "description": "Main levée près du visage, oscillation latérale 3 fois.",
+                                    "movement": {
+                                        "type": "balancier_lateral_proche_visage",
+                                        "path": [
+                                            {"x": 0.20, "y": 1.40, "z": 0.10, "phase": "centre_depart"},
+                                            {"x": 0.30, "y": 1.40, "z": 0.10, "phase": "droite_1"},
+                                            {"x": 0.15, "y": 1.40, "z": 0.10, "phase": "gauche_1"},
+                                            {"x": 0.30, "y": 1.40, "z": 0.10, "phase": "droite_2"},
+                                            {"x": 0.15, "y": 1.40, "z": 0.10, "phase": "gauche_2"},
+                                            {"x": 0.30, "y": 1.40, "z": 0.10, "phase": "droite_3"},
+                                            {"x": 0.20, "y": 1.40, "z": 0.10, "phase": "centre_fin"}
+                                        ]
+                                    },
+                                    "elbow_position": {"x": 0.32, "y": 1.05, "z": 0.00},
+                                    "wrist_euler": {"x": 0, "y": 180, "z": 0}
+                                },
+                                "pause": {
+                                    "description": "Bras au repos le long du corps pendant 7 secondes.",
+                                    "hand_position": {"x": 0.20, "y": 0.55, "z": 0.05},
+                                    "elbow_position": {"x": 0.22, "y": 0.80, "z": 0.00},
+                                    "wrist_euler": {"x": 0, "y": 90, "z": 0}
+                                }
+                            }
+                        },
+                        "left_hand": {"active": false}
+                    },
+                    "non_manual_parameters": {
+                        "facial_expression": "neutral_friendly",
+                        "eyebrows": "neutral",
+                        "gaze_target": {"x": 0.0, "y": 1.15, "z": 1.7}
+                    }
+                }
+            ]
+        }
+    ]
+}

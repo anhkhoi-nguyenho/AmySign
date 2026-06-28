@@ -1,0 +1,92 @@
+{
+    "source": "lettre_p_glosses1.json",
+    "description": "JSON machine pour Unity - Lettre P en LSF : index et majeur tendus en diagonale, annulaire et auriculaire repliés avec le pouce dessus. Le poignet bascule de 90° pour que les doigts pointent vers le bas en diagonale.",
+    "avatar_instructions": {
+        "coordinate_system": "avatar_relative",
+        "origin": "avatar_root",
+        "axis_definition": {
+            "x": "droite_de_l_avatar",
+            "y": "haut_de_l_avatar",
+            "z": "avant_de_l_avatar"
+        },
+        "unit": "meter",
+        "dominant_hand": "right",
+        "avatar_height_reference": 1.6
+    },
+    "unity_implementation_notes": {
+        "goal": "Lettre P : index + majeur tendus collés en diagonale, annulaire + auriculaire repliés, pouce posé sur l'annulaire/auriculaire. Le poignet bascule de 90° vers le bas.",
+        "important_choices": [
+            "Index et majeur entièrement tendus et collés entre eux.",
+            "Annulaire et auriculaire repliés contre la paume.",
+            "Pouce posé sur l'annulaire et l'auriculaire repliés.",
+            "Paume vers l'avatar.",
+            "Phase 1 : doigts pointent en diagonale vers le haut.",
+            "Phase 2 : poignet bascule de 90°, doigts pointent en diagonale vers le bas.",
+            "Position fixe à (0.12, 1.05, 0.16)."
+        ],
+        "ik_settings": {
+            "target_position_weight": 1.0,
+            "target_rotation_weight": 1.0,
+            "hint_weight": 0.20
+        },
+        "wrist_settings": {
+            "phase_1_diagonale_haut": {"x": -45, "y": -180, "z": 0},
+            "phase_2_diagonale_bas": {"x": 45, "y": -180, "z": 0},
+            "note": "Bascule du poignet de 90° entre les deux phases."
+        },
+        "finger_settings": {
+            "description": "Index + majeur tendus, annulaire + auriculaire repliés, pouce sur les doigts repliés.",
+            "index":  {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}, "note": "tendu"},
+            "middle": {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}, "note": "tendu collé à l'index"},
+            "ring":   {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}, "note": "replié"},
+            "pinky":  {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}, "note": "replié"},
+            "thumb":  {"ph1": {"x": 40, "y": 20, "z": 50}, "ph2": {"x": 40, "y": 0, "z": 30}, "ph3": {"x": 20, "y": 0, "z": 0}, "note": "posé sur annulaire/auriculaire"}
+        }
+    },
+    "sentences": [
+        {
+            "francais": "P",
+            "glose": ["P"],
+            "sequence": [
+                {
+                    "sign_id": "P",
+                    "duration": 1.2,
+                    "hold_at_end": true,
+                    "manual_parameters": {
+                        "right_hand": {
+                            "active": true,
+                            "handshape": "lettre_p_lsf",
+                            "final_position": {"x": 0.12, "y": 1.05, "z": 0.16},
+                            "elbow_position": {"x": 0.32, "y": 0.82, "z": 0.10},
+                            "phases": {
+                                "phase_1_diagonale_haut": {
+                                    "duration": 0.5,
+                                    "wrist_euler": {"x": -45, "y": -180, "z": 0},
+                                    "description": "Doigts pointent en diagonale vers le haut"
+                                },
+                                "phase_2_diagonale_bas": {
+                                    "duration": 0.7,
+                                    "wrist_euler": {"x": 45, "y": -180, "z": 0},
+                                    "description": "Le poignet bascule, les doigts pointent en diagonale vers le bas"
+                                }
+                            },
+                            "finger_rotations": {
+                                "index":  {"ph1": {"x":  0, "y":  0, "z":  0}, "ph2": {"x":  0, "y": 0, "z":  0}, "ph3": {"x":  0, "y": 0, "z":  0}},
+                                "middle": {"ph1": {"x":  0, "y":  0, "z":  0}, "ph2": {"x":  0, "y": 0, "z":  0}, "ph3": {"x":  0, "y": 0, "z":  0}},
+                                "ring":   {"ph1": {"x": 80, "y":  0, "z":  0}, "ph2": {"x": 90, "y": 0, "z":  0}, "ph3": {"x": 70, "y": 0, "z":  0}},
+                                "pinky":  {"ph1": {"x": 80, "y":  0, "z":  0}, "ph2": {"x": 90, "y": 0, "z":  0}, "ph3": {"x": 70, "y": 0, "z":  0}},
+                                "thumb":  {"ph1": {"x": 40, "y": 20, "z": 50}, "ph2": {"x": 40, "y": 0, "z": 30}, "ph3": {"x": 20, "y": 0, "z":  0}}
+                            }
+                        },
+                        "left_hand": {"active": false}
+                    },
+                    "non_manual_parameters": {
+                        "facial_expression": "neutral",
+                        "eyebrows": "neutral",
+                        "gaze_target": {"x": 0.0, "y": 1.15, "z": 1.7}
+                    }
+                }
+            ]
+        }
+    ]
+}
