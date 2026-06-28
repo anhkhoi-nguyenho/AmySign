@@ -1,0 +1,96 @@
+{
+    "source": "aider_glosses1.json",
+    "description": "JSON machine pour Unity - Signe AIDER en LSF : main gauche paume vers le ciel en diagonale, main droite en pouce levé posée dessus. Le tout monte légèrement vers l'avant.",
+    "avatar_instructions": {
+        "coordinate_system": "avatar_relative",
+        "origin": "avatar_root",
+        "axis_definition": {
+            "x": "droite_de_l_avatar",
+            "y": "haut_de_l_avatar",
+            "z": "avant_de_l_avatar"
+        },
+        "unit": "meter",
+        "dominant_hand": "both",
+        "avatar_height_reference": 1.6
+    },
+    "unity_implementation_notes": {
+        "goal": "AIDER : main gauche paume vers le ciel devant le torse, main droite en pouce levé posée sur la paume gauche. Le tout monte légèrement vers l'avant.",
+        "important_choices": [
+            "Main gauche : tous les doigts tendus, paume vers le ciel.",
+            "Main droite : poing fermé avec uniquement le pouce levé vers le haut.",
+            "La main droite est posée sur la paume de la main gauche.",
+            "Position de départ : devant le torse, légèrement bas.",
+            "Mouvement : les deux mains montent un peu et avancent vers l'avant.",
+            "Pose finale maintenue."
+        ],
+        "ik_settings": {
+            "target_position_weight": 1.0,
+            "target_rotation_weight": 1.0,
+            "hint_weight": 0.20
+        },
+        "wrist_settings_right": {
+            "euler": {"x": 0, "y": -180, "z": 0},
+            "note": "Main droite : pouce vers le haut."
+        },
+        "wrist_settings_left": {
+            "euler": {"x": -90, "y": 0, "z": 0},
+            "note": "Main gauche : paume vers le ciel."
+        },
+        "finger_settings_left": {
+            "description": "Main gauche : tous les doigts tendus.",
+            "index":  {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}},
+            "middle": {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}},
+            "ring":   {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}},
+            "pinky":  {"ph1": {"x": 0, "y": 0, "z": 0}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}},
+            "thumb":  {"ph1": {"x": 0, "y": 20, "z": -20}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}}
+        },
+        "finger_settings_right": {
+            "description": "Main droite : poing fermé sauf le pouce levé.",
+            "index":  {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}},
+            "middle": {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}},
+            "ring":   {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}},
+            "pinky":  {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}},
+            "thumb":  {"ph1": {"x": 0, "y": -30, "z": 30}, "ph2": {"x": 0, "y": 0, "z": 0}, "ph3": {"x": 0, "y": 0, "z": 0}}
+        }
+    },
+    "sentences": [
+        {
+            "francais": "AIDER",
+            "glose": ["AIDER"],
+            "sequence": [
+                {
+                    "sign_id": "AIDER",
+                    "duration": 1.5,
+                    "hold_at_end": true,
+                    "manual_parameters": {
+                        "right_hand": {
+                            "active": true,
+                            "movement": {
+                                "type": "monter_vers_avant",
+                                "start_position": {"x": 0.08, "y": 0.95, "z": 0.20},
+                                "end_position": {"x": 0.08, "y": 1.05, "z": 0.30}
+                            },
+                            "elbow_position": {"x": 0.28, "y": 0.78, "z": 0.05},
+                            "wrist_euler": {"x": 0, "y": -180, "z": 0}
+                        },
+                        "left_hand": {
+                            "active": true,
+                            "movement": {
+                                "type": "monter_vers_avant",
+                                "start_position": {"x": 0.05, "y": 0.92, "z": 0.20},
+                                "end_position": {"x": 0.05, "y": 1.02, "z": 0.30}
+                            },
+                            "elbow_position": {"x": -0.20, "y": 0.78, "z": 0.05},
+                            "wrist_euler": {"x": -90, "y": 0, "z": 0}
+                        }
+                    },
+                    "non_manual_parameters": {
+                        "facial_expression": "neutral",
+                        "eyebrows": "neutral",
+                        "gaze_target": {"x": 0.0, "y": 1.15, "z": 1.7}
+                    }
+                }
+            ]
+        }
+    ]
+}
