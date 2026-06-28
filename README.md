@@ -1,4 +1,4 @@
-# Speech2FSL
+# AmySign
 ## Whisper
 Dans le cadre de ce projet, l'implémentation C++/C de Whisper par OpenAI, Whisper.cpp par ggml-org sera utilisé pour raison de performance.
 
