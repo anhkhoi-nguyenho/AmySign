@@ -1,0 +1,128 @@
+{
+    "source": "avoir_mal_output_glosses1.json",
+    "description": "JSON machine pour Unity - AVOIR-MAL V7 : glissement du pouce vers le bas sur le menton + retour repos.",
+    "avatar_instructions": {
+        "coordinate_system": "avatar_relative",
+        "origin": "avatar_root",
+        "axis_definition": {
+            "x": "droite_de_l_avatar",
+            "y": "haut_de_l_avatar",
+            "z": "avant_de_l_avatar"
+        },
+        "unit": "meter",
+        "dominant_hand": "right",
+        "avatar_height_reference": 1.6
+    },
+    "unity_implementation_notes": {
+        "goal": "Animer AVOIR-MAL V7 : pouce posé sur le menton, glisse vers le bas, descente en poing, retour repos.",
+        "important_choices": [
+            "V7 : ajout du glissement du pouce vers le bas sur le menton (point 3).",
+            "Le pouce reste sorti (thumb_up) pendant TOUT le contact et le glissement.",
+            "La transition vers closed_fist se déclenche uniquement au début de la descente (segment 3).",
+            "6 points de trajectoire au lieu de 5.",
+            "Retour au repos complet en point 5.",
+            "Si le pouce ne touche pas le menton : augmenter positionOffset.Z dans l'inspecteur."
+        ],
+        "ik_settings": {
+            "component": "Two Bone IK Constraint (Unity Animation Rigging)",
+            "target_position_weight": 0.254,
+            "target_rotation_weight": 1.0,
+            "hint_weight": 0.207
+        },
+        "finger_bones_to_assign": {
+            "thumb":  ["mixamorig:RightHandThumb1", "mixamorig:RightHandThumb2", "mixamorig:RightHandThumb3"],
+            "index":  ["mixamorig:RightHandIndex1",  "mixamorig:RightHandIndex2",  "mixamorig:RightHandIndex3"],
+            "middle": ["mixamorig:RightHandMiddle1", "mixamorig:RightHandMiddle2", "mixamorig:RightHandMiddle3"],
+            "ring":   ["mixamorig:RightHandRing1",   "mixamorig:RightHandRing2",   "mixamorig:RightHandRing3"],
+            "pinky":  ["mixamorig:RightHandPinky1",  "mixamorig:RightHandPinky2",  "mixamorig:RightHandPinky3"]
+        },
+        "wrist_correction": {
+            "phases": 3,
+            "CHIN_T":  0.45,
+            "SLIDE_T": 0.60,
+            "REST_T":  0.85,
+            "start_euler": {"x": 0, "y": 90,  "z": -90},
+            "chin_euler":  {"x": 0, "y": 90,  "z": -90},
+            "end_euler":   {"x": 0, "y": 0,   "z": -90},
+            "rest_euler":  {"x": 0, "y": 90,  "z": -90},
+            "note": "Poignet perpendiculaire pendant montée + contact + glissement. Rotation pendant descente. Retour neutre au repos."
+        },
+        "timing": {
+            "segments": 5,
+            "weights": [0.20, 0.25, 0.15, 0.25, 0.15],
+            "description": "montée 20% / tenue menton 25% / glissement 15% / descente rapide 25% / retour repos 15%"
+        }
+    },
+    "available_positions": {
+        "pain_rest":          {"description": "main droite au repos",                              "position": {"x":  0.20, "y": 0.42, "z": 0.02}},
+        "pain_rise":          {"description": "montée vers le menton",                             "position": {"x":  0.10, "y": 0.90, "z": 0.10}},
+        "pain_thumb_on_chin": {"description": "pouce AU CONTACT du menton, tenu",                 "position": {"x":  0.04, "y": 1.18, "z": 0.14}},
+        "pain_thumb_slide":   {"description": "GLISSEMENT BAS du pouce sur le menton",            "position": {"x":  0.06, "y": 1.10, "z": 0.14}},
+        "pain_end":           {"description": "poing devant le torse, rotation intérieure",        "position": {"x":  0.14, "y": 0.82, "z": 0.20}},
+        "pain_rest_final":    {"description": "retour position de repos",                          "position": {"x":  0.20, "y": 0.42, "z": 0.02}},
+        "pain_elbow_rest":    {"description": "coude au repos",                                   "position": {"x":  0.28, "y": 0.54, "z": 0.02}},
+        "pain_elbow_rise":    {"description": "coude montée",                                     "position": {"x":  0.27, "y": 0.80, "z": 0.06}},
+        "pain_elbow_chin":    {"description": "coude contact menton",                             "position": {"x":  0.25, "y": 0.90, "z": 0.08}},
+        "pain_elbow_slide":   {"description": "coude glissement bas",                             "position": {"x":  0.25, "y": 0.84, "z": 0.08}},
+        "pain_elbow_end":     {"description": "coude descente torse",                             "position": {"x":  0.26, "y": 0.68, "z": 0.12}},
+        "gaze_interlocutor":  {"description": "regard vers l'interlocuteur",                      "position": {"x":  0.00, "y": 1.15, "z": 1.70}}
+    },
+    "sentences": [
+        {
+            "francais": "J'ai mal",
+            "glose": ["AVOIR-MAL"],
+            "sequence": [
+                {
+                    "sign_id": "AVOIR-MAL",
+                    "duration": 1.5,
+                    "segment_weights": [0.20, 0.25, 0.15, 0.25, 0.15],
+                    "timing_note": "montée 20% / tenue 25% / glissement 15% / descente 25% / retour 15%",
+                    "manual_parameters": {
+                        "right_hand": {
+                            "active": true,
+                            "handshape_start": "thumb_up",
+                            "handshape_end": "closed_fist",
+                            "pose_transition_trigger": "début segment descente (i==3)",
+                            "pose_transition_duration": 0.12,
+                            "pose_note": "Pouce sorti pendant tout le contact ET le glissement. Poing seulement à la descente.",
+                            "start_position": {"x":  0.20, "y": 0.42, "z": 0.02},
+                            "end_position":   {"x":  0.20, "y": 0.42, "z": 0.02},
+                            "right_elbow_hint": {
+                                "path": [
+                                    {"x": 0.28, "y": 0.54, "z": 0.02},
+                                    {"x": 0.27, "y": 0.80, "z": 0.06},
+                                    {"x": 0.25, "y": 0.90, "z": 0.08},
+                                    {"x": 0.25, "y": 0.84, "z": 0.08},
+                                    {"x": 0.26, "y": 0.68, "z": 0.12},
+                                    {"x": 0.28, "y": 0.54, "z": 0.02}
+                                ]
+                            },
+                            "movement": {
+                                "type": "avoir_mal_chin_slide_chest_rest",
+                                "easing": "SmoothStep_sauf_descente_EaseOutCubic",
+                                "path": [
+                                    {"x": 0.20, "y": 0.42, "z": 0.02, "phase": "rest",   "pose": "thumb_up",    "note": "départ repos"},
+                                    {"x": 0.10, "y": 0.90, "z": 0.10, "phase": "rise",   "pose": "thumb_up",    "note": "montée vers menton"},
+                                    {"x": 0.04, "y": 1.18, "z": 0.14, "phase": "chin",   "pose": "thumb_up",    "note": "contact menton, tenu"},
+                                    {"x": 0.06, "y": 1.10, "z": 0.14, "phase": "slide",  "pose": "thumb_up",    "note": "glissement pouce vers le bas"},
+                                    {"x": 0.14, "y": 0.82, "z": 0.20, "phase": "descend","pose": "closed_fist", "note": "descente rapide, transition poing"},
+                                    {"x": 0.20, "y": 0.42, "z": 0.02, "phase": "rest",   "pose": "relaxed",     "note": "retour repos"}
+                                ]
+                            }
+                        },
+                        "left_hand": {"active": false}
+                    },
+                    "non_manual_parameters": {
+                        "facial_expression": "pain_frown",
+                        "eyebrows": "furrowed",
+                        "gaze_target": {"x": 0.0, "y": 1.15, "z": 1.7}
+                    }
+                }
+            ],
+            "transition": {
+                "type": "smooth",
+                "pause_between_signs": 0.15
+            }
+        }
+    ]
+}

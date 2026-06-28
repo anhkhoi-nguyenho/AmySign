@@ -1,0 +1,78 @@
+{
+    "source": "lettre_s_glosses1.json",
+    "description": "JSON machine pour Unity - Lettre S en LSF : poing fermé, tous les doigts pliés, pouce posé sur l'index et le majeur. Paume vers la caméra.",
+    "avatar_instructions": {
+        "coordinate_system": "avatar_relative",
+        "origin": "avatar_root",
+        "axis_definition": {
+            "x": "droite_de_l_avatar",
+            "y": "haut_de_l_avatar",
+            "z": "avant_de_l_avatar"
+        },
+        "unit": "meter",
+        "dominant_hand": "right",
+        "avatar_height_reference": 1.6
+    },
+    "unity_implementation_notes": {
+        "goal": "Lettre S : poing fermé, tous les doigts pliés ensemble, pouce posé sur l'index et le majeur. Paume tournée vers la caméra.",
+        "important_choices": [
+            "Index, majeur, annulaire, auriculaire : tous pliés en poing.",
+            "Pouce posé sur l'index et le majeur.",
+            "Paume vers la caméra (et non vers l'avatar).",
+            "Position fixe à (0.12, 1.05, 0.16).",
+            "Pose maintenue."
+        ],
+        "ik_settings": {
+            "target_position_weight": 1.0,
+            "target_rotation_weight": 1.0,
+            "hint_weight": 0.20
+        },
+        "wrist_settings": {
+            "euler": {"x": 0, "y": 0, "z": 0},
+            "note": "Paume vers la caméra : rotation Y = 0 (différent des autres lettres)."
+        },
+        "finger_settings": {
+            "description": "Tous les doigts pliés en poing.",
+            "index":  {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}, "note": "plié"},
+            "middle": {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}, "note": "plié"},
+            "ring":   {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}, "note": "plié"},
+            "pinky":  {"ph1": {"x": 80, "y": 0, "z": 0}, "ph2": {"x": 90, "y": 0, "z": 0}, "ph3": {"x": 70, "y": 0, "z": 0}, "note": "plié"},
+            "thumb":  {"ph1": {"x": 40, "y": 20, "z": 50}, "ph2": {"x": 40, "y": 0, "z": 30}, "ph3": {"x": 20, "y": 0, "z": 0}, "note": "posé sur index/majeur"}
+        }
+    },
+    "sentences": [
+        {
+            "francais": "S",
+            "glose": ["S"],
+            "sequence": [
+                {
+                    "sign_id": "S",
+                    "duration": 1.0,
+                    "hold_at_end": true,
+                    "manual_parameters": {
+                        "right_hand": {
+                            "active": true,
+                            "handshape": "lettre_s_lsf",
+                            "final_position": {"x": 0.12, "y": 1.05, "z": 0.16},
+                            "elbow_position": {"x": 0.32, "y": 0.82, "z": 0.10},
+                            "wrist_euler": {"x": 0, "y": 0, "z": 0},
+                            "finger_rotations": {
+                                "index":  {"ph1": {"x": 80, "y":  0, "z":  0}, "ph2": {"x": 90, "y": 0, "z":  0}, "ph3": {"x": 70, "y": 0, "z":  0}},
+                                "middle": {"ph1": {"x": 80, "y":  0, "z":  0}, "ph2": {"x": 90, "y": 0, "z":  0}, "ph3": {"x": 70, "y": 0, "z":  0}},
+                                "ring":   {"ph1": {"x": 80, "y":  0, "z":  0}, "ph2": {"x": 90, "y": 0, "z":  0}, "ph3": {"x": 70, "y": 0, "z":  0}},
+                                "pinky":  {"ph1": {"x": 80, "y":  0, "z":  0}, "ph2": {"x": 90, "y": 0, "z":  0}, "ph3": {"x": 70, "y": 0, "z":  0}},
+                                "thumb":  {"ph1": {"x": 40, "y": 20, "z": 50}, "ph2": {"x": 40, "y": 0, "z": 30}, "ph3": {"x": 20, "y": 0, "z":  0}}
+                            }
+                        },
+                        "left_hand": {"active": false}
+                    },
+                    "non_manual_parameters": {
+                        "facial_expression": "neutral",
+                        "eyebrows": "neutral",
+                        "gaze_target": {"x": 0.0, "y": 1.15, "z": 1.7}
+                    }
+                }
+            ]
+        }
+    ]
+}
