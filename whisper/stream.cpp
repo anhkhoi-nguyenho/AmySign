@@ -10,12 +10,16 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include <process.h>
+
+#define NOMINMAX // Prevent windows.h from defining min, conflicting with std::min
+#include <windows.h>
 
 // command-line parameters
 struct whisper_params {
     int32_t n_threads  = std::min(4, (int32_t) std::thread::hardware_concurrency());
     int32_t step_ms    = 0;
-    int32_t length_ms  = 4000;
+    int32_t length_ms  = 5000;
     int32_t keep_ms    = 0;
     int32_t capture_id = -1;
     int32_t max_tokens = 0;
@@ -33,33 +37,44 @@ struct whisper_params {
     bool tinydiarize   = false;
     bool save_audio    = false;
     bool use_gpu       = true;
-    bool flash_attn    = true;
+    bool flash_attn    = false;
 
     std::string language  = "fr";
     std::string model;
     std::string fname_out;
 };
 
+int32_t cooldown_duration 	= 2000;
+int32_t sample_duration 	= 3000;
+
 void display_configurable_options(const whisper_params & params){
 	std::cerr << "\nwhisper-stream configurable options:\n" << std::flush;
-	std::cerr << "  -t N,     --threads N     number of threads to use during computation                    -   current:   " << params.n_threads     << "\n" << std::flush;
-	std::cerr << "            --length N      audio length in milliseconds                                   -   current:   " << params.length_ms     << "\n" << std::flush;
-	std::cerr << "  -vth N,   --vad-thold N   voice activity detection threshold (higher = more sensitive)   -   current:   " << params.vad_thold     << "\n" << std::flush;
-	std::cerr << "  -fth N,   --freq-thold N  high-pass frequency cutoff                                     -   current:   " << params.freq_thold    << "\n" << std::flush;
-	std::cerr << "  -ac N,    --audio-ctx N   audio context size (0 - all)                                   -   current:   " << params.audio_ctx     << "\n" << std::flush;
-	std::cerr << "  -m FNAME, --model FNAME   model path                                                     -   current:   " << params.model.c_str() << "\n" << std::flush;
+	std::cerr << "  -t N,     --threads N          number of threads to use during computation                    -   current:   " << params.n_threads     					 << "\n" << std::flush;
+	std::cerr << "            --length N           audio length in milliseconds                                   -   current:   " << params.length_ms     					 << "\n" << std::flush;
+	std::cerr << "  -vth N,   --vad-thold N        voice activity detection threshold (higher = more sensitive)   -   current:   " << params.vad_thold     					 << "\n" << std::flush;
+	std::cerr << "  -fth N,   --freq-thold N       high-pass frequency cutoff                                     -   current:   " << params.freq_thold    					 << "\n" << std::flush;
+	std::cerr << "  -ac N,    --audio-ctx N        audio context size (0 - all)                                   -   current:   " << params.audio_ctx     					 << "\n" << std::flush;
+	std::cerr << "  -bs N,    --beam-size N        beam size for beam search                                      -   current:   " << params.beam_size 	  					 << "\n" << std::flush;
+	std::cerr << "  -m FNAME, --model FNAME        model path                                                     -   current:   " << params.model.c_str() 					 << "\n" << std::flush;
+	std::cerr << "  -fa,      --flash-attn         enable flash attention during inference                        -   current:   " << (params.flash_attn ? "true" : "false") << "\n" << std::flush;
+	std::cerr << "  -cd,      --cooldown           cooldown duration of vad                                       -   current:   " << cooldown_duration						 << "\n" << std::flush;
+	std::cerr << "  -sd,      --sample-duration    sample duration of vad                                         -   current:   " << sample_duration						 << "\n" << std::flush;
 }
 
 static bool whisper_params_parse(int argc, char ** argv, whisper_params & params) {
     for (int i = 1; i < argc; i++) {
         std::string arg = argv[i];
 
-        if 		(arg == "-t"    || arg == "--threads")       { params.n_threads     = std::stoi(argv[++i]); }
-        else if (                  arg == "--length")        { params.length_ms     = std::stoi(argv[++i]); }
-        else if (arg == "-vth"  || arg == "--vad-thold")     { params.vad_thold     = std::stof(argv[++i]); }
-        else if (arg == "-fth"  || arg == "--freq-thold")    { params.freq_thold    = std::stof(argv[++i]); }
-        else if (arg == "-ac"   || arg == "--audio-ctx")     { params.audio_ctx     = std::stoi(argv[++i]); }
-        else if (arg == "-m"    || arg == "--model")         { params.model         = argv[++i]; }
+        if 		(arg == "-t"    || arg == "--threads")          { params.n_threads     = std::stoi(argv[++i]); }
+        else if (                  arg == "--length")           { params.length_ms     = std::stoi(argv[++i]); }
+        else if (arg == "-vth"  || arg == "--vad-thold")        { params.vad_thold     = std::stof(argv[++i]); }
+        else if (arg == "-fth"  || arg == "--freq-thold")       { params.freq_thold    = std::stof(argv[++i]); }
+        else if (arg == "-ac"   || arg == "--audio-ctx")        { params.audio_ctx     = std::stoi(argv[++i]); }
+		else if (arg == "-bs"   || arg == "--beam-size")        { params.beam_size     = std::stoi(argv[++i]); }
+        else if (arg == "-m"    || arg == "--model")            { params.model         = argv[++i]; }
+		else if (arg == "-fa"   || arg == "--flash-attn")       { params.flash_attn    = true; }
+		else if (arg == "-cd"   || arg == "--cooldown")         { cooldown_duration    = std::stoi(argv[++i]); }
+		else if (arg == "-sd"   || arg == "--sample-duration")  { sample_duration      = std::stoi(argv[++i]); }
         else {
 			std::cerr << "Error: unknown argument: " << arg.c_str() << "\n" << std::flush;
             exit(0);
@@ -71,6 +86,14 @@ static bool whisper_params_parse(int argc, char ** argv, whisper_params & params
 
 
 int main(int argc, char ** argv) {
+
+	SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+	
+	int pid = _getpid();
+	
+	std::cerr << "pid" << pid << std::endl;
+	
     ggml_backend_load_all();
 
     whisper_params params;
@@ -126,14 +149,11 @@ int main(int argc, char ** argv) {
 	
 	display_configurable_options(params);
 
-    // print some info about the processing
-    {
-        if (!whisper_is_multilingual(ctx)) {
-            std::cerr << "Error: model is not multilingual, French is not supported!\n" << std::flush;
-            exit(0);
-        }
-		std::cerr << "\nReady !\n" << std::flush;
-    }
+	if (!whisper_is_multilingual(ctx)) {
+		std::cerr << "Error: model is not multilingual, French is not supported!\n" << std::flush;
+		exit(0);
+	}
+	std::cerr << "READY\n" << std::flush;
 
     int n_iter = 0;
 
@@ -157,13 +177,13 @@ int main(int argc, char ** argv) {
             const auto t_now  = std::chrono::high_resolution_clock::now();
             const auto t_diff = std::chrono::duration_cast<std::chrono::milliseconds>(t_now - t_last).count();
 
-            if (t_diff < 2000) {
+            if (t_diff < cooldown_duration) {
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
                 continue;
             }
 
-            audio.get(2000, pcmf32_new);
+            audio.get(sample_duration, pcmf32_new);
 
             if (::vad_simple(pcmf32_new, WHISPER_SAMPLE_RATE, 1000, params.vad_thold, params.freq_thold, false)) {
                 audio.get(params.length_ms, pcmf32);
