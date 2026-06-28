@@ -5,7 +5,7 @@ Ce dépôt ne contient pas de projet complet mais des programmes et fichiers cl�
 Le projet complet pour Unity peut être téléchargé ici :
 https://drive.google.com/file/d/17WU3vSh49h14xvu3LWR8acYc13AUDArw/view?usp=drive_link
 
-[Documentation AmySign - Jade REBEYROLLE_ Sarah OULBOUB_ Ny Soa RABEARIVONY_Léa-Madeleine POMBO_ Anh Khoi NGUYEN HO_v2.pdf](https://github.com/user-attachments/files/29440715/Documentation.AmySign.-.Jade.REBEYROLLE_.Sarah.OULBOUB_.Ny.Soa.RABEARIVONY_Lea-Madeleine.POMBO_.Anh.Khoi.NGUYEN.HO_v2.pdf)
+<img width="2340" height="1655" alt="page_1" src="https://github.com/user-attachments/assets/68f7d200-c197-4f60-8a35-84ead01bcb93" />
 
 <div align="center">
   <a href="https://www.youtube.com/watch?v=IqpecSeV-1k">
